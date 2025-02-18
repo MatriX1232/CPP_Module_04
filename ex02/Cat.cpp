@@ -6,16 +6,25 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:51:18 by root              #+#    #+#             */
-/*   Updated: 2025/02/13 20:23:50 by root             ###   ########.fr       */
+/*   Updated: 2025/02/13 21:12:04 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cat.hpp"
+#include "Brain.hpp"
+#include <cstdio>
+#include <cstdlib>
 
 Cat::Cat() : Animal()
 {
-    this->_type = "Cat";
     std::cout << "Cat default constructor called" << std::endl;
+    this->_type = "Cat";
+    this->_brain = new Brain();
+    if (this->_brain == NULL)
+    {
+        perror("ERROR: Brain alloc failed");
+        exit(1);
+    }
 }
 
 Cat::Cat(Cat const &src) : Animal()
@@ -27,13 +36,14 @@ Cat::Cat(Cat const &src) : Animal()
 Cat::~Cat()
 {
     std::cout << "Cat destructor called" << std::endl;
+    delete this->_brain;
 }
 
-Cat & Cat::operator=(Cat const & rhs)
+Cat & Cat::operator=(Cat const & other)
 {
     std::cout << "Cat assignation operator called" << std::endl;
-    if (this != &rhs)
-        this->_type = rhs._type;
+    if (this != &other)
+        this->_type = other._type;
     return *this;
 }
 
